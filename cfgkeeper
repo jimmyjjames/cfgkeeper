@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# vim: ft=bash:tabstop=4
+
+SD=`pwd`
+
+. ~/.config/cfgkeeperrc
+
+cvs=`basename ${VCS}`
+. ${SD}/cfgkeeper.${cvs##.*}
+
+
+_add(){
+	if [ -f "${1}" ]; then
+		# TODO get abolut path without ..
+		local DSTD=${BAKDIR}$(dirname "${1}")
+		mkdir -p "${DSTD}"
+		DSTD=${DSTD}/$(basename "${1}")
+		cp -dp "${1}" "${DSTD}"
+		vcs_add "${1#/}"
+		local RET=$?
+		[ 0 = ${RET} ] && echo "add: ${1}" && return 0
+	elif [ -d "${1}" ]; then
+		echo "add error: add files separately."
+		return 1
+	fi
+
+	echo "add error: ${RET}"
+
+	return 1
+}
+
+_del(){
+	echo "del"
+}
+
+_commit(){
+	vcs_commit "${1}"
+	local RET=$?
+	[ 0 = ${RET} ] && echo "set commited." && return 0
+	echo "commit error: ${RET}"
+}
+
+
+_usage(){
+	echo "use: $0 (add|del) object"
+}
+
+
+case "$1" in
+	add)
+		[ $# = 2 ] && _add "${SD}/$2"
+		[ $? = 1 ] && _usage
+  		;;
+
+	del)
+		[ $# = 2 ] && _del "${SD}/$2"
+		[ $? = 1 ] && _usage
+		;;
+
+	co) 
+		[ $# = 2 ] && _commit "$2"
+		[ $? = 1 ] && _usage
+		;;
+
+	push) ;;
+
+	pull) ;;
+
+	status) vcs_status;;
+
+	pt) shift; vcs_pt $@;;
+
+
+
+	*) _usage;;
+esac
+
+# list set
+# list path 
+

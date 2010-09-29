@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# vim: ft=bash:tabstop=4
+
+vcs_init() {
+	${VCS} init
+	return $?
+}
+
+vcs_add() {
+	${VCS} add "$1"
+	return $?
+}
+
+vcs_commit() {
+	${VCS} commit --message="${1}"
+	return $?
+}
+
+vcs_status() {
+	${VCS} status
+	return 0
+}
+
+vcs_pt() {
+	${VCS} $@
+	return 0
+}
+
+# create backup dir
+if [ ! -d "$BAKDIR" ] 
+then
+	echo "create cfgkeeper repositority"
+	mkdir -p "$BAKDIR"
+	cd "${BAKDIR}"
+	vcs_init
+fi
+
+cd "${BAKDIR}"
+
