@@ -52,10 +52,10 @@ _commit(){
 _usage(){
 	echo -en "usage: $(basename $0)\n"
 	echo -en "   add FILE\tAdd a file to the commit set\n"
-	echo -en "   rm FILE\tRemove a file from the backup\n"
+	echo -en "   rm FILE\tRemove a file from the repository\n"
 	echo -en "   commit MSG\tRecord changes to the repository\n"
-	echo -en "   status\tShow the repositors status\n"
-	echo -en "   check\tShow tracked file changes\n"
+	echo -en "   status\tShow the repository status\n"
+	echo -en "   check\tShow modified files\n"
 	echo -en "   *\t\tForward arguments to $vcs\n"
 	echo -en "\n"
 }
