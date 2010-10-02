@@ -59,6 +59,8 @@ _usage(){
 	echo -en "   check\t\tShow modified files\n"
 	echo -en "   ARGS\t\t\tForward arguments to $vcs\n"
 	echo -en "\n"
+	echo -en "info:\tvcs:$vcs, backupdir:$BAKDIR\n"
+	echo -en "\n"
 	exit 1
 }
 
@@ -66,12 +68,12 @@ _check(){
 	echo "TODO check"
 }
 
-[ $# = 0 ] && _usage && exit
+[ $# = 0 ] && _usage
 
 case "$1" in
 	add)	[ $# -gt 1 ] && shift && _add "$1" || _usage;;
 
-	rm)	[ $# -gt 1 ] && shift && _rm "$1" || _usage;;
+	rm)		[ $# -gt 1 ] && shift && _rm "$1" || _usage;;
 
 	commit)	[ $# -gt 1 ] && shift && _commit "$1" || _usage;;
 
@@ -79,6 +81,6 @@ case "$1" in
 
 	check)	_check;;
 
-	*)	vcs_pt $@;;
+	*)		vcs_pt $@;;
 esac
 
