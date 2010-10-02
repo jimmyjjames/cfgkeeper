@@ -33,10 +33,16 @@ _add(){
 _rm(){
 	FP=$1
 	_checkFP
-	if [ -d "${BAKDIR}${FP}" ]; then
-		echo "error: remove files separatley."
+	if [ ! -e "${BAKDIR}${FP}" ]; then
+		echo "error: object dosn't exist in the backup"
+		exit 1
 	else
-		vcs_rm "${FP#/}"
+		if [ -d "${BAKDIR}${FP}" ]; then
+			echo "error: remove files separatley."
+			exit 1
+		else
+			vcs_rm "${FP#/}"
+		fi
 	fi
 }
 
