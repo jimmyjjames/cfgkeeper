@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-# vim: ft=bash ts=4
-
-BAKDIR=/dev/shm/cfgkeeper
-VCS=/usr/bin/git

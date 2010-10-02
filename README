@@ -1,3 +1,35 @@
 cfgkeeper 
 
-a bash script that adds your config files to a version control system
+a bash script that keeps your config files in a version control system
+
+
+INSTALL
+-------
+
+cp cfgkeeper.git cfgkeeper
+
+cat  cfgkeeper.main >> cfgkeeper
+
+chmod 775 cfgkeeper
+
+chown root:root cfgkeeper
+
+mv cfgkeeper /usr/bin/cfgkeeper
+
+mkdir -p ~/.config
+
+cp cfgkeeper.rc.dist ~/.config/cfgkeeper.rc
+
+edit ~/.config/cfgkeeper.rc
+
+
+USAGE
+-----
+cfgkeeper init			#init the backupdir
+
+cfgkeeper			#show usage
+
+cfgkeeper add /etc/hosts	#backup a file
+cfgkeeper commit "initial version of etc/hosts"
+
+

@@ -11,11 +11,11 @@ vcs_init() {
 }
 
 vcs_add() {
-	echo "$(cd "${BAKDIR}"; ${VCS} add -v -- $1)"
+	echo "$(cd "${BAKDIR}"; ${VCS} add -v -- "$1")"
 }
 
 vcs_rm() {
-	echo "$(cd "${BAKDIR}"; ${VCS} rm -f -- $1)"
+	echo "$(cd "${BAKDIR}"; ${VCS} rm -f -- "$1")"
 }
 
 vcs_commit() {
