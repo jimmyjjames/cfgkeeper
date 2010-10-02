@@ -1,86 +1,99 @@
 #!/usr/bin/env bash
-# vim: ft=bash ts=4
 
-WD=$PWD
-SD=`dirname $0`
+. `dirname $0`/cfgkeeper.git
+
+# Name:			cfgkeeper
+# Version:		0.1 - 2010-10-01 (yyyy-mm-dd)
+# Author/Copyright: 	Christoph Polcin <labs-AT-polcin.de>
+# Projectpage:		http://www.christoph-polcin.com/project/cfgkeeper
+# Modified by:
+# Created:		2010-09-26 (yyyy-mm-dd)
+# Licence: 		GPL2
+
 FP=''
 
-. ~/.config/cfgkeeperrc
-
-vcs=`basename $VCS`
-. $SD/cfgkeeper.${vcs##.*}	
-
-
-_setFP(){
-	FP=$1
+_checkFP(){
 	if [ ! "${FP:0:1}" = "/" ]; then
-		FP=$(cd $(dirname "$WD/$FP"); pwd -P)/$(basename "$FP")
+		FP=$(cd $(dirname "$PWD/$FP"); pwd -P)/$(basename "$FP")
 	fi
 }
 
 _add(){
-	_setFP "$1"
+	FP=$1
+	_checkFP
 	if [ -f "$FP" ]; then
 		local dp="$BAKDIR`dirname "$FP"`"
 		mkdir -p "$dp"
-		dp=$dp/`basename "${1}"`
+		dp=$dp/`basename "${FP}"`
 		cp -dp "$FP" "$dp"
 		vcs_add "${FP#/}"
-		[ $? = 0 ] && echo "add $FP"
-	elif [ -d "$1" ]; then
+	elif [ -d "$FP" ]; then
 		echo "error: add files separately."
 	fi
-
-	return 0
 }
 
 _rm(){
-	_setFP "$1"
+	FP=$1
+	_checkFP
 	if [ -f "${BAKDIR}${FP}" ]; then
-		vcs_rm "${FP#/}"
+		vcs_rm "${FP#/}" $@
 	elif [ -d "${BAKDIR}${FP}" ]; then
 		echo "error: remove files separatley."
 	fi
-	
-	return 0
-}
-
-_commit(){
-	vcs_commit "${1}"
-	[ 0 = $? ] && echo "set commited." 
 }
 
 _usage(){
+	local vcs=`basename $VCS`
 	echo -en "usage: $(basename $0)\n"
 	echo -en "   add FILE\t\tAdd a file to the commit set\n"
-	echo -en "   rm FILE\t\tRemove a file from the repository\n"
-	echo -en "   commit MSG\t\tRecord changes to the repository\n"
-	echo -en "   status [ARGS]\t\tShow the repository status\n"
 	echo -en "   check\t\tShow modified files\n"
-	echo -en "   ARGS\t\t\tForward arguments to $vcs\n"
+	echo -en "   commit MSG\t\tRecord changes to the repository\n"
+	echo -en "   init\t\t\tInitialize the backupdirectory\n"
+	echo -en "   restore FILE\t\tRestore a file\n"
+	echo -en "   rm FILE\t\tRemove a file from the repository\n"
+	echo -en "   status [ARGS]\tShow the repository status\n"
+	echo -en "   -- ARGS\t\tForward arguments to $vcs\n"
 	echo -en "\n"
-	echo -en "info:\tvcs:$vcs, backupdir:$BAKDIR\n"
+	echo -en "info: vcs:$vcs, backupdir:$BAKDIR\n"
 	echo -en "\n"
 	exit 1
 }
 
 _check(){
+	#TODO
 	echo "TODO check"
 }
+
+_restore(){
+	#TODO
+	echo "TODO restore"
+}
+
+
+
+. ~/.config/cfgkeeperrc
+
 
 [ $# = 0 ] && _usage
 
 case "$1" in
-	add)	[ $# -gt 1 ] && shift && _add "$1" || _usage;;
+	
+	init)	vcs_init;;
 
-	rm)		[ $# -gt 1 ] && shift && _rm "$1" || _usage;;
+	add)	[ $# = 2 ] && _add "$2" || _usage;;
 
-	commit)	[ $# -gt 1 ] && shift && _commit "$1" || _usage;;
+	rm)	[ $# = 2 ] && _rm "$2" || _usage;;
+
+	commit)	[ $# = 2 ] && vcs_commit "$2" || _usage;;
 
 	status)	shift; vcs_status $@;;
 
 	check)	_check;;
 
-	*)		vcs_pt $@;;
+	restore) _restore;;
+
+	--)	shift; vcs_pt $@;;
+
+	*)	_usage;;
 esac
 

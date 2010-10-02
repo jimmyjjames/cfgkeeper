@@ -2,43 +2,31 @@
 # vim: ft=bash:tabstop=4
 
 vcs_init() {
-	${VCS} init
-	return $?
+	if [ ! -d "$BAKDIR" ]; then
+		mkdir -p "$BAKDIR"
+		echo "$(cd "${BAKDIR}"; ${VCS} init)"
+	else
+		echo "repository exists"
+	fi
 }
 
 vcs_add() {
-	${VCS} add "$1"
-	return $?
+	echo "$(cd "${BAKDIR}"; ${VCS} add -v -- $1)"
 }
 
 vcs_rm() {
-	${VCS} rm -f "$1"
-	return $?
+	echo "$(cd "${BAKDIR}"; ${VCS} rm -f -- $1)"
 }
 
 vcs_commit() {
-	${VCS} commit --message="${1}"
-	return $?
+	echo "$(cd "${BAKDIR}"; ${VCS} commit --message="$1")"
 }
 
 vcs_status() {
-	${VCS} status
-	return 0
+	echo "$(cd "${BAKDIR}"; ${VCS} status $@)"
 }
 
 vcs_pt() {
-	${VCS} $@
-	return 0
+	echo "$(cd "${BAKDIR}"; ${VCS} $@)"
 }
-
-# create backup dir
-if [ ! -d "$BAKDIR" ] 
-then
-	echo "create the cfgkeeper repository in $BAKDIR"
-	mkdir -p "$BAKDIR"
-	cd "${BAKDIR}"
-	vcs_init
-fi
-
-cd "${BAKDIR}"
 
