@@ -1,27 +1,32 @@
 #!/usr/bin/env bash
 # vim: ft=bash ts=4
 
-WD=`pwd`
+WD=$PWD
 SD=`dirname $0`
+FP=''
 
 . ~/.config/cfgkeeperrc
 
 vcs=`basename $VCS`
 . $SD/cfgkeeper.${vcs##.*}	
 
-_add(){
-	local fp=$1
-	if [ ! "${fp:0:1}" = "/" ]; then
-		fp=$(cd $(dirname "$WD/$fp"); pwd -P)/$(basename "$fp")
-	fi
 
-	if [ -f "$fp" ]; then
-		local dp="$BAKDIR`dirname "$fp"`"
+_setFP(){
+	FP=$1
+	if [ ! "${FP:0:1}" = "/" ]; then
+		FP=$(cd $(dirname "$WD/$FP"); pwd -P)/$(basename "$FP")
+	fi
+}
+
+_add(){
+	_setFP "$1"
+	if [ -f "$FP" ]; then
+		local dp="$BAKDIR`dirname "$FP"`"
 		mkdir -p "$dp"
 		dp=$dp/`basename "${1}"`
-		cp -dp "$fp" "$dp"
-		vcs_add "${fp#/}"
-		[ $? = 0 ] && echo "add $fp"
+		cp -dp "$FP" "$dp"
+		vcs_add "${FP#/}"
+		[ $? = 0 ] && echo "add $FP"
 	elif [ -d "$1" ]; then
 		echo "error: add files separately."
 	fi
@@ -30,14 +35,10 @@ _add(){
 }
 
 _rm(){
-	local fp=$1
-	if [ ! "${fp:0:1}" = "/" ]; then
-		fp=$(cd $(dirname "$WD/$fp"); pwd -P)/$(basename "$fp")
-	fi
-
-	if [ -f "${BAKDIR}${fp}" ]; then
-		vcs_rm "${fp#/}"
-	elif [ -d "${BAKDIR}${fp}" ]; then
+	_setFP "$1"
+	if [ -f "${BAKDIR}${FP}" ]; then
+		vcs_rm "${FP#/}"
+	elif [ -d "${BAKDIR}${FP}" ]; then
 		echo "error: remove files separatley."
 	fi
 	
@@ -51,13 +52,14 @@ _commit(){
 
 _usage(){
 	echo -en "usage: $(basename $0)\n"
-	echo -en "   add FILE\tAdd a file to the commit set\n"
-	echo -en "   rm FILE\tRemove a file from the repository\n"
-	echo -en "   commit MSG\tRecord changes to the repository\n"
-	echo -en "   status\tShow the repository status\n"
-	echo -en "   check\tShow modified files\n"
-	echo -en "   *\t\tForward arguments to $vcs\n"
+	echo -en "   add FILE\t\tAdd a file to the commit set\n"
+	echo -en "   rm FILE\t\tRemove a file from the repository\n"
+	echo -en "   commit MSG\t\tRecord changes to the repository\n"
+	echo -en "   status [ARGS]\t\tShow the repository status\n"
+	echo -en "   check\t\tShow modified files\n"
+	echo -en "   ARGS\t\t\tForward arguments to $vcs\n"
 	echo -en "\n"
+	exit 1
 }
 
 _check(){
@@ -67,16 +69,16 @@ _check(){
 [ $# = 0 ] && _usage && exit
 
 case "$1" in
-	add)	[ $# = 2 ] && _add "$2" || _usage;;
+	add)	[ $# -gt 1 ] && shift && _add "$1" || _usage;;
 
-	rm)		[ $# = 2 ] && _rm "$2" || _usage;;
+	rm)	[ $# -gt 1 ] && shift && _rm "$1" || _usage;;
 
-	commit)	[ $# = 2 ] && _commit "$2" || _usage;;
+	commit)	[ $# -gt 1 ] && shift && _commit "$1" || _usage;;
 
-	status)	vcs_status;;
+	status)	shift; vcs_status $@;;
 
 	check)	_check;;
 
-	*)		vcs_pt $@;;
+	*)	vcs_pt $@;;
 esac
 
