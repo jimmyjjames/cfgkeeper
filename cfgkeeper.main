@@ -10,15 +10,15 @@
 FP=''
 DIFF="diff '%sf' '%bf'"
 
-_checkFP(){
+_setFP(){
+	FP=$1
 	if [ ! "${FP:0:1}" = "/" ]; then
 		FP=$(cd $(dirname "$PWD/$FP"); pwd -P)/$(basename "$FP")
 	fi
 }
 
 _add(){
-	FP=$1
-	_checkFP
+	_setFP $1
 	if [ -f "$FP" ]; then
 		[ -L "$FP" ] && echo "warn: symbolic link '$FP'"
 		local dp="$BAKDIR`dirname "$FP"`"
@@ -38,8 +38,7 @@ _add(){
 }
 
 _rm(){
-	FP=$1
-	_checkFP
+	_setFP $1
 	if [ ! -e "${BAKDIR}${FP}" ]; then
 		echo "error: file not found ${BAKDIR}${FP}"
 		exit 1
@@ -91,8 +90,7 @@ _restore(){
 }
 
 _diff(){
-	FP=$1
-	_checkFP
+	_setFP $1
 	[ ! -e "${FP}" ] && echo "error: file not found ${BAKDIR}${FP}" && exit 1
 	[ ! -e "${BAKDIR}${FP}" ] && echo "error: file not found ${BAKDIR}${FP}" && exit 1
 
