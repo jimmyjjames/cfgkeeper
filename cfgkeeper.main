@@ -52,7 +52,8 @@ _usage(){
 	echo -en "   add FILE\t\tAdd a file to the commit set\n"
 	echo -en "   check\t\tShow modified files\n"
 	echo -en "   commit MSG\t\tRecord changes to the repository\n"
-	echo -en "   init\t\t\tInitialize the backupdirectory\n"
+	echo -en "   diff FILE\t\tShow changes between backup and system file\n"
+	echo -en "   init\t\t\tInitialize the backup directory\n"
 	echo -en "   restore FILE\t\tRestore a file\n"
 	echo -en "   rm FILE\t\tRemove a file from the repository\n"
 	echo -en "   status [ARGS]\tShow the repository status\n"
@@ -73,6 +74,11 @@ _restore(){
 	echo "TODO restore"
 }
 
+_diff(){
+	#TODO
+	echo "TODO diff"
+}
+
 
 . ~/.config/cfgkeeper.rc
 
@@ -84,6 +90,8 @@ case "$1" in
 	init)	vcs_init;;
 
 	add)	[ $# = 2 ] && _add "$2" || _usage;;
+
+	diff)   _diff;;
 
 	rm)	[ $# = 2 ] && _rm "$2" || _usage;;
 
