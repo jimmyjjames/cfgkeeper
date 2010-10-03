@@ -72,8 +72,17 @@ _usage(){
 }
 
 _check(){
-	#TODO
-	echo "TODO check"
+	local sf=""
+	find $BAKDIR -type f -print0 | while read -d $'\0' file
+	do
+		[[ "$file" == $VCS_DIR_MASK ]] && continue
+
+		sf="${file#${BAKDIR}}"
+		if ! diff "$file" "$sf" > /dev/null
+		then
+			echo  "  modified: '$sf'"
+		fi
+  	done
 }
 
 _restore(){
