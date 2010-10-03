@@ -1,11 +1,11 @@
 
-# Name:			cfgkeeper
-# Version:		0.1 - 2010-10-01 (yyyy-mm-dd)
-# Author/Copyright: 	Christoph Polcin <labs-AT-polcin.de>
-# Projectpage:		http://www.christoph-polcin.com/project/cfgkeeper
+# Name:					cfgkeeper
+# Version:				0.1 - 2010-10-01 (yyyy-mm-dd)
+# Author/Copyright:		Christoph Polcin <labs-AT-polcin.de>
+# Projectpage:			http://www.christoph-polcin.com/project/cfgkeeper
 # Modified by:
-# Created:		2010-09-26 (yyyy-mm-dd)
-# Licence: 		GPL2
+# Created:				2010-09-26 (yyyy-mm-dd)
+# Licence:				GPL2
 
 FP=''
 
@@ -19,14 +19,20 @@ _add(){
 	FP=$1
 	_checkFP
 	if [ -f "$FP" ]; then
-	# TODO warn if symlink?
+		[ -L "$FP" ] && echo "warn: symbolic link '$FP'"
 		local dp="$BAKDIR`dirname "$FP"`"
 		mkdir -p "$dp"
 		dp=$dp/`basename "${FP}"`
 		cp -dp "$FP" "$dp"
-		vcs_add "${FP#/}"
+		if [ $? = 0 ]; then
+			vcs_add "${FP#/}"
+		else
+			echo 'error: copy error has occurred'
+		fi
 	elif [ -d "$FP" ]; then
-		echo "error: add files separately."
+		echo 'error: add files separately.'
+	else
+		echo "error: file not found '$FP'"
 	fi
 }
 
