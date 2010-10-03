@@ -25,11 +25,16 @@ edit ~/.config/cfgkeeper.rc
 
 USAGE
 -----
-cfgkeeper init			#init the backupdir
+usage: cfgkeeper
+   add FILE		Add a file to the commit set
+   check		Show modified files
+   commit MSG		Record changes to the repository
+   diff FILE		Show changes between backup and system file
+   init			Initialize the backup directory
+   restore FILE		Restore a file
+   rm FILE		Remove a file from the repository
+   status [ARGS]	Show the repository status
+   -- ARGS		Forward arguments to git
 
-cfgkeeper			#show usage
-
-cfgkeeper add /etc/hosts	#backup a file
-cfgkeeper commit "initial version of etc/hosts"
-
+info: vcs:git, backupdir:/root/cfgkeeper
 
