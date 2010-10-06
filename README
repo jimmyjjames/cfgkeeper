@@ -8,6 +8,8 @@ INSTALL
 
 cp cfgkeeper.git cfgkeeper
 
+echo 'CFG="${HOME}/.config/cfgkeeper.rc"' >> cfgkeeper
+
 cat  cfgkeeper.main >> cfgkeeper
 
 chmod 775 cfgkeeper

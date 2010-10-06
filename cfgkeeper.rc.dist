@@ -1,5 +1,2 @@
-#!/usr/bin/env bash
-
-BAKDIR=/root/cfgkeeper
-VCS=/usr/bin/git
-
+BAKDIR="/root/cfgkeeper"
+VCS="/usr/bin/git"

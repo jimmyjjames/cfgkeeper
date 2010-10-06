@@ -40,7 +40,7 @@ _add(){
 _rm(){
 	_setFP "$1"
 	if [ ! -e "${BAKDIR}${FP}" ]; then
-		echo "error: file not found ${BAKDIR}${FP}"
+		echo "error: file not found '${BAKDIR}${FP}'"
 		exit 1
 	else
 		if [ -d "${BAKDIR}${FP}" ]; then
@@ -53,8 +53,8 @@ _rm(){
 }
 
 _usage(){
-	local vcs=`basename $VCS`
-	echo -en "usage: $(basename $0)\n"
+	local vcs=`basename "$VCS"`
+	echo -en "usage: $(basename "$0")\n"
 	echo -en "   add FILE\t\tAdd a file to the commit set\n"
 	echo -en "   check\t\tShow modified files\n"
 	echo -en "   commit MSG\t\tRecord changes to the repository\n"
@@ -91,8 +91,8 @@ _restore(){
 
 _diff(){
 	_setFP "$1"
-	[ ! -e "${FP}" ] && echo "error: file not found ${BAKDIR}${FP}" && exit 1
-	[ ! -e "${BAKDIR}${FP}" ] && echo "error: file not found ${BAKDIR}${FP}" && exit 1
+	[ ! -e "${FP}" ] && echo "error: file not found '${BAKDIR}${FP}'" && exit 1
+	[ ! -e "${BAKDIR}${FP}" ] && echo "error: file not found '${BAKDIR}${FP}'" && exit 1
 
 	DIFF=${DIFF/\%sf/$FP}
 	DIFF=${DIFF/\%bf/${BAKDIR}${FP}}
@@ -103,7 +103,8 @@ _diff(){
 }
 
 
-. ~/.config/cfgkeeper.rc
+[ ! -f "${CFG}" ] && echo -en "error: need '${CFG}'\n" && exit 0
+. "${CFG}"
 
 
 [ $# = 0 ] && _usage
@@ -141,4 +142,4 @@ case "$1" in
 				_usage;;
 esac
 
-# vim: set ft=sh ts=4
+# vim: ft=sh ts=4
