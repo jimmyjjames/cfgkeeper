@@ -3,8 +3,20 @@ cfgkeeper - http://www.christoph-polcin.com/project/cfgkeeper
 a bash script that keeps your config files in a version control system
 
 
-INSTALL
--------
+
+INSTALL Script
+--------------
+
+sudo install.sh git /usr/bin
+
+${EDITOR} ~/.config/cfgkeeper.rc
+
+cfgkeeper init
+
+
+
+MANUAL INSTALL
+--------------
 
 cp cfgkeeper.git cfgkeeper
 
@@ -12,7 +24,7 @@ echo 'CFG="${HOME}/.config/cfgkeeper.rc"' >> cfgkeeper
 
 cat  cfgkeeper.main >> cfgkeeper
 
-chmod 775 cfgkeeper
+chmod 755 cfgkeeper
 
 chown root:root cfgkeeper
 
@@ -22,7 +34,10 @@ mkdir -p ~/.config
 
 cp cfgkeeper.rc.dist ~/.config/cfgkeeper.rc
 
-edit ~/.config/cfgkeeper.rc
+${EDITOR} ~/.config/cfgkeeper.rc
+
+cfgkeeper init
+
 
 
 USAGE
