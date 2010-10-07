@@ -28,14 +28,14 @@ edit ~/.config/cfgkeeper.rc
 USAGE
 -----
 usage: cfgkeeper
-   add FILE		Add a file to the commit set
+   add FILEs		Add files to the index
    check		Show modified files
    commit MSG		Record changes to the repository
    diff FILE		Show changes between backup and system file
    init			Initialize the backup directory
    ls			List repository
-   restore FILE		Restore a file
-   rm FILE		Remove a file from the repository
+   restore FILEs	Restore files
+   rm FILEs		Remove files from the repository
    status [ARGS]	Show the repository status
    -- ARGS		Forward arguments to git
 
