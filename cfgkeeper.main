@@ -1,11 +1,11 @@
 
-# Name:					cfgkeeper
-# Version:				0.1 - 2010-10-01 (yyyy-mm-dd)
-# Author/Copyright:		Christoph Polcin <labs-AT-polcin.de>
-# Projectpage:			http://www.christoph-polcin.com/project/cfgkeeper
+# Name:                                 cfgkeeper
+# Version:                              0.1 - 2010-10-01 (yyyy-mm-dd)
+# Author/Copyright:                     Christoph Polcin <labs-AT-polcin.de>
+# Projectpage:                          http://www.christoph-polcin.com/project/cfgkeeper
 # Modified by:
-# Created:				2010-09-26 (yyyy-mm-dd)
-# Licence:				GPL2
+# Created:                              2010-09-26 (yyyy-mm-dd)
+# Licence:                              GPL2
 
 FP=''
 DIFF="diff '%sf' '%bf'"
@@ -60,6 +60,7 @@ _usage(){
 	echo -en "   commit MSG\t\tRecord changes to the repository\n"
 	echo -en "   diff FILE\t\tShow changes between backup and system file\n"
 	echo -en "   init\t\t\tInitialize the backup directory\n"
+	echo -en "   ls\t\t\tList repository\n"
 	echo -en "   restore FILE\t\tRestore a file\n"
 	echo -en "   rm FILE\t\tRemove a file from the repository\n"
 	echo -en "   status [ARGS]\tShow the repository status\n"
@@ -72,7 +73,7 @@ _usage(){
 
 _check(){
 	local sf=""
-	find $BAKDIR -type f -print0 | while read -d $'\0' file
+	find "$BAKDIR" -type f -print0 | while read -d $'\0' file
 	do
 		[[ "$file" == $VCS_DIR_MASK ]] && continue
 
@@ -87,6 +88,17 @@ _check(){
 _restore(){
 	#TODO
 	echo "TODO restore"
+}
+
+_ls(){
+	local sf=""
+	find "$BAKDIR" -type f -print0 | while read -d $'\0' file
+	do
+		[[ "$file" == $VCS_DIR_MASK ]] && continue
+
+		sf="${file#${BAKDIR}}"
+		echo  "'$sf'"
+  	done
 }
 
 _diff(){
@@ -132,6 +144,9 @@ case "$1" in
 	check)
 				_check;;
 
+	ls)
+				shift; _ls $@;;
+
 	restore)
 				_restore;;
 
@@ -143,3 +158,4 @@ case "$1" in
 esac
 
 # vim: ft=sh ts=4
+
