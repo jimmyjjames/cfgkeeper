@@ -48,7 +48,7 @@ usage: cfgkeeper
    commit MSG		Record changes to the repository
    diff FILE		Show changes between backup and system file
    init			Initialize the backup directory
-   ls			List repository
+   ls [PATH]		List repository content
    restore FILEs	Restore files
    rm FILEs		Remove files from the repository
    status [ARGS]	Show the repository status

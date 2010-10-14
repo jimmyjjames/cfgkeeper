@@ -18,7 +18,7 @@ _usage(){
 	echo -en "   commit MSG\t\tRecord changes to the repository\n"
 	echo -en "   diff FILE\t\tShow changes between backup and system file\n"
 	echo -en "   init\t\t\tInitialize the backup directory\n"
-	echo -en "   ls\t\t\tList repository\n"
+	echo -en "   ls [PATH]\t\tList repository content\n"
 	echo -en "   restore FILEs\tRestore files\n"
 	echo -en "   rm FILEs\t\tRemove files from the repository\n"
 	echo -en "   status [ARGS]\tShow the repository status\n"
@@ -103,7 +103,13 @@ _restore(){
 
 _ls(){
 	local sf=""
-	find "$BAKDIR" -type f -print0 | while read -d $'\0' file
+	if [ $# != 0 ]; then
+		_setFP "$1"
+		[ ! -d "$FP" ] && FP=`dirname "$FP"`
+		[ ! -e "${BAKDIR}${FP}" ] && echo "error: path not found: ${BAKDIR}${FP}" && exit 1
+	fi
+
+	find "${BAKDIR}${FP}" -type f -print0 | while read -d $'\0' file
 	do
 		[[ "$file" == $VCS_DIR_MASK ]] && continue
 
@@ -126,7 +132,7 @@ _diff(){
 }
 
 
-[ ! -f "${CFG}" ] && echo -en "error: need '${CFG}'\n" && exit 0
+[ ! -f "${CFG}" ] && echo -en "error: need configfile '${CFG}'\n" && exit 0
 . "${CFG}"
 
 
