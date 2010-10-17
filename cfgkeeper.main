@@ -1,6 +1,6 @@
 
 # Name:                                 cfgkeeper
-# Version:                              0.2 - 2010-10-07 (yyyy-mm-dd)
+# Version:                              0.3 - 2010-10-17 (yyyy-mm-dd)
 # Author/Copyright:                     Christoph Polcin <labs-AT-polcin.de>
 # Projectpage:                          http://www.christoph-polcin.com/project/cfgkeeper
 # Modified by:
@@ -75,9 +75,12 @@ _check(){
 	local sf=""
 	find "$BAKDIR" -type f -print0 | while read -d $'\0' file
 	do
-		[[ "$file" == $VCS_DIR_MASK ]] && continue
+		[[ "$file" == $VCS_IGNORE_MASK ]] && continue
 
 		sf="${file#${BAKDIR}}"
+		
+		[ ! -e "$sf" ] && echo " missing: '$sf'" && continue
+
 		if ! diff "$file" "$sf" > /dev/null
 		then
 			echo  "  modified: '$sf'"
@@ -111,7 +114,7 @@ _ls(){
 
 	find "${BAKDIR}${FP}" -type f -print0 | while read -d $'\0' file
 	do
-		[[ "$file" == $VCS_DIR_MASK ]] && continue
+		[[ "$file" == $VCS_IGNORE_MASK ]] && continue
 
 		sf="${file#${BAKDIR}}"
 		echo  "'$sf'"

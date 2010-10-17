@@ -2,12 +2,19 @@ cfgkeeper - http://www.christoph-polcin.com/project/cfgkeeper
 
 a bash script that keeps your config files in a version control system
 
+SUPPORTED VCS
+-------------
+
+git
+hg (scheduled)
+bzr (scheduled)
+
 
 
 INSTALL Script
 --------------
 
-sudo install.sh git /usr/bin
+sudo install.sh git /usr/bin /usr/share/git/contrib
 
 ${EDITOR} ~/.config/cfgkeeper.rc
 
@@ -22,7 +29,10 @@ cp cfgkeeper.git cfgkeeper
 
 echo 'CFG="${HOME}/.config/cfgkeeper.rc"' >> cfgkeeper
 
-cat  cfgkeeper.main >> cfgkeeper
+# VCS_CONTRIB has to contain 'hooks/setgitperms.perl'
+echo "VCS_CONTRIB='/usr/share/git/contrib'" >> cfgkeeper
+
+cat cfgkeeper.main >> cfgkeeper
 
 chmod 755 cfgkeeper
 
@@ -30,18 +40,21 @@ chown root:root cfgkeeper
 
 mv cfgkeeper /usr/bin/cfgkeeper
 
-mkdir -p ~/.config
+mkdir ~/.config
 
 cp cfgkeeper.rc.dist ~/.config/cfgkeeper.rc
 
+# edit your config file
 ${EDITOR} ~/.config/cfgkeeper.rc
 
+# initialize the repository
 cfgkeeper init
 
 
 
 USAGE
 -----
+
 usage: cfgkeeper
    add FILEs		Add files to the index
    check		Show modified files
