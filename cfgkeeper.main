@@ -1,6 +1,6 @@
 
 # Name:                                 cfgkeeper
-# Version:                              0.3 - 2010-10-17 (yyyy-mm-dd)
+# Version:                              0.3.1 - 2010-10-18 (yyyy-mm-dd)
 # Author/Copyright:                     Christoph Polcin <labs-AT-polcin.de>
 # Projectpage:                          http://www.christoph-polcin.com/project/cfgkeeper
 # Modified by:
@@ -14,7 +14,7 @@ _usage(){
 	local vcs=`basename "$VCS"`
 	echo -en "usage: $(basename "$0")\n"
 	echo -en "   add FILEs\t\tAdd files to the index\n"
-	echo -en "   check\t\tShow modified files\n"
+	echo -en "   check [PATH]\t\tShow modified files\n"
 	echo -en "   commit MSG\t\tRecord changes to the repository\n"
 	echo -en "   diff FILE\t\tShow changes between backup and system file\n"
 	echo -en "   init\t\t\tInitialize the backup directory\n"
@@ -73,7 +73,13 @@ _rm(){
 
 _check(){
 	local sf=""
-	find "$BAKDIR" -type f -print0 | while read -d $'\0' file
+	if [ $# != 0 ]; then
+		_setFP "$1"
+		[ ! -d "$FP" ] && FP=`dirname "$FP"`
+		[ ! -e "${BAKDIR}${FP}" ] && echo "error: path not found: ${BAKDIR}${FP}" && exit 1
+	fi
+
+	find "${BAKDIR}${FP}" -type f -print0 | while read -d $'\0' file
 	do
 		[[ "$file" == $VCS_IGNORE_MASK ]] && continue
 
@@ -83,7 +89,10 @@ _check(){
 
 		if ! diff "$file" "$sf" > /dev/null
 		then
-			echo  "  modified: '$sf'"
+			echo "  content: '$sf'"
+		elif [  $(/usr/bin/stat -c '%a%u%g' "$file") != $(/usr/bin/stat -c '%a%u%g' "$sf") ]
+		then
+			echo "  meta: '$sf'" 
 		fi
   	done
 }
@@ -172,7 +181,7 @@ case "$1" in
 				shift; vcs_status $@;;
 
 	check)
-				_check;;
+				shift; _check $@;;
 
 	ls)
 				shift; _ls $@;;

@@ -57,7 +57,7 @@ USAGE
 
 usage: cfgkeeper
    add FILEs		Add files to the index
-   check		Show modified files
+   check [PATH]		Show modified files
    commit MSG		Record changes to the repository
    diff FILE		Show changes between backup and system file
    init			Initialize the backup directory
