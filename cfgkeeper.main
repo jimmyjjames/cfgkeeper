@@ -1,6 +1,6 @@
 
 # Name:                                 cfgkeeper
-# Version:                              0.3.1 - 2010-10-18 (yyyy-mm-dd)
+# Version:                              0.3.2 - 2011-01-02 (yyyy-mm-dd)
 # Author/Copyright:                     Christoph Polcin <labs-AT-polcin.de>
 # Projectpage:                          http://www.christoph-polcin.com/project/cfgkeeper
 # Modified by:
@@ -90,7 +90,7 @@ _check(){
 		if ! diff "$file" "$sf" > /dev/null
 		then
 			echo "  content: '$sf'"
-		elif [  $(/usr/bin/stat -c '%a%u%g' "$file") != $(/usr/bin/stat -c '%a%u%g' "$sf") ]
+		elif [  $($STAT "$file") != $($STAT "$sf") ]
 		then
 			echo "  meta: '$sf'" 
 		fi
@@ -144,7 +144,7 @@ _diff(){
 }
 
 
-[ ! -f "${CFG}" ] && echo -en "error: need configfile '${CFG}'\n" && exit 0
+[ ! -f "${CFG}" ] && echo -en "error: need configfile '${CFG}'\n" && exit 1
 . "${CFG}"
 
 
