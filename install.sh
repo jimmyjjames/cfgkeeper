@@ -20,7 +20,7 @@ echo 'CFG="${HOME}/.config/cfgkeeper.rc"' >> cfgkeeper
 echo "VCS_CONTRIB='$3'" >> cfgkeeper
 
 # adjust STAT
-if [ "$(uname -o)" == "GNU/Linuxs" ]
+if [ "$(uname -o)" == "GNU/Linux" ]
 then
 	echo "STAT=\"stat -c '%a%u%g'\"" >> cfgkeeper
 else

@@ -65,7 +65,7 @@ Usage
 
 	usage: cfgkeeper
 		add FILEs		Add files to the index
-		check [PATH]		Show modified files
+		check [PATH]	Show modified files
 		commit MSG		Record changes to the repository
 		diff FILE		Show changes between backup and system file
 		init			Initialize the backup directory
@@ -73,7 +73,7 @@ Usage
 		restore FILEs	Restore files
 		rm FILEs		Remove files from the repository
 		status [ARGS]	Show the repository status
-		-- ARGS		Forward arguments to git
+		-- ARGS			Forward arguments to git
 
 	info: vcs:git, backupdir:/root/cfgkeeper
 
