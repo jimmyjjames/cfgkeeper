@@ -1,6 +1,6 @@
 
 # Name:                                 cfgkeeper
-# Version:                              0.3.2 - 2011-01-02 (yyyy-mm-dd)
+# Version:                              0.3.3 - 2011-01-13 (yyyy-mm-dd)
 # Author/Copyright:                     Christoph Polcin <labs-AT-polcin.de>
 # Projectpage:                          http://www.christoph-polcin.com/project/cfgkeeper
 # Modified by:
@@ -9,6 +9,7 @@
 
 FP=''
 DIFF="diff '%sf' '%bf'"
+VCS_IGNORE_MASK="${BACKDIR}/${VCS_IGNORE_MASK}*"
 
 _usage(){
 	local vcs=`basename "$VCS"`
@@ -202,4 +203,3 @@ case "$1" in
 esac
 
 # vim: ft=sh ts=4
-

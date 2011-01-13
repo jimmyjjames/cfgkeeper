@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VCS_IGNORE_MASK="*/.git*"
+VCS_IGNORE_MASK=".git"
 
 vcs_init() {
 	if [ ! -d "$BAKDIR/.git" ]; then
@@ -50,4 +50,3 @@ vcs_pt() {
 	echo "$(cd "${BAKDIR}"; ${VCS} $@)"
 }
 
-# vim: set ft=sh ts=4
