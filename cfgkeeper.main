@@ -7,11 +7,13 @@
 # Created:                              2010-09-26 (yyyy-mm-dd)
 # Licence:                              GPL2
 
+# init vars {{{
 FP=''
 DIFF="diff '%sf' '%bf'"
 VCS_IGNORE_MASK="${BACKDIR}/${VCS_IGNORE_MASK}*"
+#}}}
 
-_usage(){
+_usage(){ #{{{
 	local vcs=`basename "$VCS"`
 	echo -en "usage: $(basename "$0")\n"
 	echo -en "   add FILEs\t\tAdd files to the index\n"
@@ -29,15 +31,17 @@ _usage(){
 	echo -en "\n"
 	exit 1
 }
+#}}}
 
-_setFP(){
+_setFP(){ #{{{
 	FP="$1"
 	if [ ! "${FP:0:1}" = "/" ]; then
 		FP=$(cd $(dirname "$PWD/$FP"); pwd -P)/$(basename "$FP")
 	fi
 }
+#}}}
 
-_add(){
+_add(){ #{{{
 	_setFP "$1"
 	if [ -f "$FP" ]; then
 		[ -L "$FP" ] && echo "warn: symbolic link '$FP'"
@@ -56,8 +60,9 @@ _add(){
 		echo "error: file not found '$FP'"
 	fi
 }
+#}}}
 
-_rm(){
+_rm(){ #{{{
 	_setFP "$1"
 	if [ ! -e "${BAKDIR}${FP}" ]; then
 		echo "error: file not found '${BAKDIR}${FP}'"
@@ -71,8 +76,9 @@ _rm(){
 		fi
 	fi
 }
+#}}}
 
-_check(){
+_check(){ #{{{
 	local sf=""
 	if [ $# != 0 ]; then
 		_setFP "$1"
@@ -97,8 +103,9 @@ _check(){
 		fi
   	done
 }
+#}}}
 
-_restore(){
+_restore(){ #{{{
 	_setFP "$1"
 	if [ ! -e "${BAKDIR}${FP}" ]; then
 		echo "error: file not found '${BAKDIR}${FP}'"
@@ -113,8 +120,9 @@ _restore(){
 		fi
 	fi
 }
+#}}}
 
-_ls(){
+_ls(){ #{{{
 	local sf=""
 	if [ $# != 0 ]; then
 		_setFP "$1"
@@ -130,8 +138,9 @@ _ls(){
 		echo  "'$sf'"
   	done
 }
+#}}}
 
-_diff(){
+_diff(){ #{{{
 	_setFP "$1"
 	[ ! -e "${FP}" ] && echo "error: file not found '${BAKDIR}${FP}'" && exit 1
 	[ ! -e "${BAKDIR}${FP}" ] && echo "error: file not found '${BAKDIR}${FP}'" && exit 1
@@ -143,15 +152,17 @@ _diff(){
 
 	return 0
 }
+#}}}
 
-
+# checks {{{
 [ ! -f "${CFG}" ] && echo -en "error: need configfile '${CFG}'\n" && exit 1
 . "${CFG}"
 
 
 [ $# = 0 ] && _usage
+#}}}
 
-case "$1" in
+case "$1" in #{{{
 
 	init)
 				vcs_init;;
@@ -201,5 +212,6 @@ case "$1" in
 	*)
 				_usage;;
 esac
+#}}}
 
-# vim: ft=sh ts=4
+# vim:ft=bash:ts=2:foldmethod=marker:noexpandtab

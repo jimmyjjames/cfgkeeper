@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-VCS_IGNORE_MASK=".git"
+VCS_IGNORE_MASK=".git" # {{{
 
-vcs_init() {
+vcs_init() { #{{{
 	if [ ! -d "$BAKDIR/.git" ]; then
 		mkdir -p "$BAKDIR"
 		
@@ -29,24 +29,33 @@ vcs_init() {
 		echo "error: repository already initialized!"
 	fi
 }
+#}}}
 
-vcs_add() {
+vcs_add() { #{{{
 	echo "$(cd "${BAKDIR}"; ${VCS} add -v -- "$1")"
 }
+#}}}
 
-vcs_rm() {
+vcs_rm() { #{{{
 	echo "$(cd "${BAKDIR}"; ${VCS} rm -f -- "$1")"
 }
+#}}}
 
-vcs_commit() {
+vcs_commit() { #{{{
 	echo "$(cd "${BAKDIR}"; ${VCS} commit --message="$1")"
 }
+#}}}
 
-vcs_status() {
+vcs_status() { #{{{
 	echo "$(cd "${BAKDIR}"; ${VCS} status $@)"
 }
+#}}}
 
-vcs_pt() {
+vcs_pt() { #{{{
 	echo "$(cd "${BAKDIR}"; ${VCS} $@)"
 }
+#}}}
 
+#}}}
+
+# vim:ft=bash:ts=2:foldmethod=marker:noexpandtab
