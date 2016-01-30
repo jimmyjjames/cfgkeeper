@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+
+# Name:                                 cfgkeeper
+# Version:                              0.3.3 - 2011-01-13 (yyyy-mm-dd)
+# Author/Copyright:                     Christoph Polcin <labs-AT-polcin.de>
+# Projectpage:                          http://www.christoph-polcin.com/project/cfgkeeper
+# Modified by:
+# Created:                              2010-09-26 (yyyy-mm-dd)
+# Licence:                              GPL2
+
+
 CFG="${HOME}/.config/cfgkeeper.rc"
 
 # VCS_CONTRIB directory has to contain 'hooks/setgitperms.perl'
@@ -20,8 +30,15 @@ case $OS in
   *) ;;
 esac
 
+VCS_IGNORE_MASK=".git"
 
-VCS_IGNORE_MASK=".git" # {{{
+# init vars {{{
+FP=''
+DIFF="diff '%sf' '%bf'"
+VCS_IGNORE_MASK="${BACKDIR}/${VCS_IGNORE_MASK}*"
+#}}}
+
+
 
 vcs_init() { #{{{
 	if [ ! -d "$BAKDIR/.git" ]; then
@@ -77,22 +94,6 @@ vcs_pt() { #{{{
 }
 #}}}
 
-#}}}
-
-
-# Name:                                 cfgkeeper
-# Version:                              0.3.3 - 2011-01-13 (yyyy-mm-dd)
-# Author/Copyright:                     Christoph Polcin <labs-AT-polcin.de>
-# Projectpage:                          http://www.christoph-polcin.com/project/cfgkeeper
-# Modified by:
-# Created:                              2010-09-26 (yyyy-mm-dd)
-# Licence:                              GPL2
-
-# init vars {{{
-FP=''
-DIFF="diff '%sf' '%bf'"
-VCS_IGNORE_MASK="${BACKDIR}/${VCS_IGNORE_MASK}*"
-#}}}
 
 _usage(){ #{{{
 	local vcs=`basename "$VCS"`
