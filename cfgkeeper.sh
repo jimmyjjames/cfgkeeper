@@ -6,10 +6,20 @@ CFG="${HOME}/.config/cfgkeeper.rc"
 # or get it from 'http://git.kernel.org/?p=git/git.git;a=blob_plain;f=contrib/hooks/setgitperms.perl;hb=HEAD'
 VCS_CONTRIB='/usr/share/git/contrib'
 
-#for GNU/Linux
-echo "STAT=\"stat -c '%a%u%g'\"" >> cfgkeeper
-#for BSD
-#echo "STAT=\"stat -f '%Lp%u%g'\"" >> cfgkeeper
+OS="`uname`"
+case $OS in
+  'Linux')
+    STAT="stat -c '%a%u%g'"
+    ;;
+  'FreeBSD')
+    STAT="stat -f '%Lp%u%g'"
+    ;;
+  'Darwin')
+    STAT="stat -f '%Lp%u%g'"
+    ;;
+  *) ;;
+esac
+
 
 VCS_IGNORE_MASK=".git" # {{{
 
