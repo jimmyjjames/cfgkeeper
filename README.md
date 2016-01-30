@@ -1,53 +1,24 @@
 cfgkeeper
 =========
 
-A bash script that keeps your config files in a version control system. [Project homepage][1]
+A bash script that keeps your config files in the git version control system. [Project homepage][1]
 
-
-Supported VCS
--------------
-
-* git
-* hg (scheduled)
-* bzr (scheduled)
 
 
 Install
 -------
 
-### The automaitc installer (do you trust me?)
 
-	wget https://github.com/chripo/cfgkeeper/raw/master/install.sh -O cfgkeeper_install.sh
-	sudo cfgkeeper_install.sh git /usr/bin /usr/share/git/contrib
-	edit ~/.config/cfgkeeper.rc
-	cfgkeeper init
-
-
-### The manual way - git
-
-	git clone git://github.com/chripo/cfgkeeper.git
+	git clone https://github.com/jimmyjjames/cfgkeeper.git
 	cd cfgkeeper
 
-	cp cfgkeeper.git cfgkeeper
-
-	echo 'CFG="${HOME}/.config/cfgkeeper.rc"' >> cfgkeeper
-
-	# VCS_CONTRIB directory has to contain 'hooks/setgitperms.perl'
-	# or get it from 'http://git.kernel.org/?p=git/git.git;a=blob_plain;f=contrib/hooks/setgitperms.perl;hb=HEAD'
-	echo "VCS_CONTRIB='/usr/share/git/contrib'" >> cfgkeeper
-
-	#for GNU/Linux
-	echo "STAT=\"stat -c '%a%u%g'\"" >> cfgkeeper
-	#for BSD
-	echo "STAT=\"stat -f '%Lp%u%g'\"" >> cfgkeeper
-
-	cat cfgkeeper.main >> cfgkeeper
+	#you may need to edit cfgkeeper.sh to change the variable VCS_CONTRIB
 
 	#adjust perms
-	chmod 755 cfgkeeper
-	chown root:root cfgkeeper
+	chmod 755 cfgkeeper.sh
+	chown root:root cfgkeeper.sh
 
-	mv cfgkeeper /usr/bin/cfgkeeper
+	mv cfgkeeper.sh /usr/bin/cfgkeeper
 
 	#if fist install
 	mkdir ~/.config
