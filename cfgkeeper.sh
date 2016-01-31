@@ -30,7 +30,7 @@ case $OS in
   *) ;;
 esac
 
-VCS_IGNORE_MASK=".git"
+VCS_IGNORE_MASK="*/.git"
 
 # init vars {{{
 FP=''
