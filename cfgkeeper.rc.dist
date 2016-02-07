@@ -1,2 +1,4 @@
 BAKDIR="/root/cfgkeeper"
 VCS="/usr/bin/git"
+
+#VCS_CONTRIB="/usr/share/git/contrib"

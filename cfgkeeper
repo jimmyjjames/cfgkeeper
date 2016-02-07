@@ -10,11 +10,9 @@
 # Licence:                              GPL2
 
 
-CFG="${HOME}/.config/cfgkeeper.rc"
+VCS_CONTRIB="/usr/share/git/contrib"
 
-# VCS_CONTRIB directory has to contain 'hooks/setgitperms.perl'
-# or get it from 'http://git.kernel.org/?p=git/git.git;a=blob_plain;f=contrib/hooks/setgitperms.perl;hb=HEAD'
-VCS_CONTRIB='/usr/share/git/contrib'
+CFG="${HOME}/.config/cfgkeeper.rc"
 
 OS="`uname`"
 case $OS in
@@ -42,8 +40,14 @@ VCS_IGNORE_MASK="${BACKDIR}/${VCS_IGNORE_MASK}*"
 
 vcs_init() { #{{{
 	if [ ! -d "$BAKDIR/.git" ]; then
+		if [ ! -f "$VCS_CONTRIB/hooks/setgitperms.perl" ]; then
+				echo VCS_CONTRIB="$VCS_CONTRIB" directory must contain 'hooks/setgitperms.perl'.
+				echo Adjust the path or pull it from 'http://git.kernel.org/?p=git/git.git;a=blob_plain;f=contrib/hooks/setgitperms.perl;hb=HEAD'
+				exit 1
+		fi
+
 		mkdir -p "$BAKDIR"
-		
+
 		echo "$(cd "${BAKDIR}"; ${VCS} init)"
 
 		touch "$BAKDIR/.gitmeta"
@@ -52,9 +56,9 @@ vcs_init() { #{{{
 		echo -en '#!/bin/sh\nSUBDIRECTORY_OK=1 . git-sh-setup\n$GIT_DIR/hooks/setgitperms.perl -w' > "$BAKDIR/.git/hooks/post-merge"
 		cp "$BAKDIR/.git/hooks/post-merge" "$BAKDIR/.git/hooks/post-checkout"
 
-		cp "$VCS_CONTRIB/hooks/setgitperms.perl" "$BAKDIR/.git/hooks/setgitperms.perl"
+		ln -s "$VCS_CONTRIB/hooks/setgitperms.perl" "$BAKDIR/.git/hooks/setgitperms.perl"
 
-		chmod +x "$BAKDIR/.git/hooks/pre-commit" "$BAKDIR/.git/hooks/post-merge" "$BAKDIR/.git/hooks/post-checkout" "$BAKDIR/.git/hooks/setgitperms.perl"
+		chmod +x "$BAKDIR/.git/hooks/pre-commit" "$BAKDIR/.git/hooks/post-merge" "$BAKDIR/.git/hooks/post-checkout"
 
 		echo -en "!.gitmeta\n!.gitignore" >> "$BAKDIR/.gitignore"
 
