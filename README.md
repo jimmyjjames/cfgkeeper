@@ -9,7 +9,7 @@ Install
 -------
 
 
-	git clone https://github.com/jimmyjjames/cfgkeeper.git
+	git clone https://github.com/chripo/cfgkeeper.git
 	cd cfgkeeper
 
 	#you may need to edit cfgkeeper.sh to change the variable VCS_CONTRIB
