@@ -15,10 +15,9 @@ Install
 	#you may need to edit cfgkeeper.sh to change the variable VCS_CONTRIB
 
 	#adjust perms
-	chmod 755 cfgkeeper.sh
-	chown root:root cfgkeeper.sh
+	chown root:root cfgkeeper
 
-	mv cfgkeeper.sh /usr/bin/cfgkeeper
+	mv cfgkeeper /usr/bin/cfgkeeper
 
 	#if fist install
 	mkdir ~/.config
