@@ -46,9 +46,11 @@ vcs_init() { #{{{
 		exit 1
 	fi
 
-	mkdir -p "$BAKDIR"
-
-	echo "$(cd "${BAKDIR}"; ${VCS} init)"
+	if [ ! -z "$1" ]; then
+		${VCS} clone "$1" "$BAKDIR"
+	else
+		${VCS} init "$BAKDIR"
+	fi
 
 	touch "$BAKDIR/.gitmeta"
 
@@ -97,20 +99,19 @@ vcs_pt() { #{{{
 
 
 _usage(){ #{{{
-	local vcs=`basename "$VCS"`
 	echo -en "usage: $(basename "$0")\n"
 	echo -en "   add FILEs\t\tAdd files to the index\n"
 	echo -en "   check [PATH]\t\tShow modified files\n"
 	echo -en "   commit MSG\t\tRecord changes to the repository\n"
 	echo -en "   diff FILE\t\tShow changes between backup and system file\n"
-	echo -en "   init\t\t\tInitialize the backup directory\n"
+	echo -en "   init [GIT_REPO]\tInitialize the backup directory\n"
 	echo -en "   ls [PATH]\t\tList repository content\n"
 	echo -en "   restore FILEs\tRestore files\n"
 	echo -en "   rm FILEs\t\tRemove files from the repository\n"
 	echo -en "   status [ARGS]\tShow the repository status\n"
 	echo -en "   -- ARGS\t\tForward arguments to $vcs\n"
 	echo -en "\n"
-	echo -en "info: vcs:$vcs, backupdir:$BAKDIR\n"
+	echo -en "backupdir: $BAKDIR\n"
 	echo -en "\n"
 	exit 1
 }
@@ -248,7 +249,9 @@ _diff(){ #{{{
 case "$1" in #{{{
 
 	init)
-				vcs_init;;
+				shift
+				vcs_init $@
+				;;
 
 	add)
 				shift;
