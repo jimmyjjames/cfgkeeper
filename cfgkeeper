@@ -106,7 +106,7 @@ _usage(){ #{{{
 	echo -en "   restore FILEs\tRestore files\n"
 	echo -en "   rm FILEs\t\tRemove files from the repository\n"
 	echo -en "   status [ARGS]\tShow the repository status\n"
-	echo -en "   -- ARGS\t\tForward arguments to $vcs\n"
+	echo -en "   -- ARGS\t\tForward arguments to git\n"
 	echo -en "\n"
 	echo -en "backupdir: $BAKDIR\n"
 	echo -en "\n"
