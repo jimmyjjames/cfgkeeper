@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-
 # Name:                                 cfgkeeper
-# Version:                              0.3.3 - 2011-01-13 (yyyy-mm-dd)
+# Version:                              0.4.0 - 2016-02-08 (yyyy-mm-dd)
 # Author/Copyright:                     Christoph Polcin <labs-AT-polcin.de>
 # Projectpage:                          http://www.christoph-polcin.com/project/cfgkeeper
 # Modified by:
@@ -94,7 +93,6 @@ vcs_pt() { #{{{
 }
 #}}}
 
-
 _usage(){ #{{{
 	echo -en "usage: $(basename "$0")\n"
 	echo -en " a\tadd FILEs\t\tAdd files to the index\n"
@@ -184,7 +182,7 @@ _check(){ #{{{
 			echo "  content: '$sf'"
 		elif [  $($STAT "$file") != $($STAT "$sf") ]
 		then
-			echo "  meta: '$sf'" 
+			echo "  meta: '$sf'"
 		fi
   	done
 }
