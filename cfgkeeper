@@ -29,14 +29,10 @@ case $OS in
   *) ;;
 esac
 
-VCS_IGNORE_MASK="*/.git"
-
 # init vars {{{
 FP=''
 DIFF="diff '%sf' '%bf'"
-VCS_IGNORE_MASK="${BACKDIR}/${VCS_IGNORE_MASK}*"
 #}}}
-
 
 
 vcs_init() { #{{{
@@ -173,10 +169,12 @@ _check(){ #{{{
 
 	find "${BAKDIR}${FP}" -type f -print0 | while read -d $'\0' file
 	do
-		[[ "$file" == $VCS_IGNORE_MASK ]] && continue
+		case "$file" in
+				*$VCS_IGNORE_MASK*) continue;;
+		esac
 
 		sf="${file#${BAKDIR}}"
-		
+
 		[ ! -e "$sf" ] && echo " missing: '$sf'" && continue
 
 		if ! diff "$file" "$sf" > /dev/null
@@ -217,7 +215,9 @@ _ls(){ #{{{
 
 	find "${BAKDIR}${FP}" -type f -print0 | while read -d $'\0' file
 	do
-		[[ "$file" == $VCS_IGNORE_MASK ]] && continue
+		case "$file" in
+				*$VCS_IGNORE_MASK*) continue;;
+		esac
 
 		sf="${file#${BAKDIR}}"
 		echo  "'$sf'"
@@ -242,6 +242,8 @@ _diff(){ #{{{
 # checks {{{
 [ ! -f "${CFG}" ] && echo -en "error: need configfile '${CFG}'\n" && exit 1
 . "${CFG}"
+
+VCS_IGNORE_MASK="${BACKDIR}/.git"
 
 
 [ $# = 0 ] && _usage
