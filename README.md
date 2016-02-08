@@ -35,6 +35,8 @@ Usage
 	d	diff FILE		Show changes between backup and system file
 		init [REPO]		Initialize the backup directory
 	l	ls [PATH]		List repository content
+	pl	pull			Pull changes
+	p	push [ARGS]		Push changes
 	re	restore FILEs	Restore files
 		rm FILEs		Remove files from the repository
 	s	status [ARGS]	Show the repository status

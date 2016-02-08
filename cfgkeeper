@@ -103,6 +103,8 @@ _usage(){ #{{{
 	echo -en " d\tdiff FILE\t\tShow changes between backup and system file\n"
 	echo -en "\tinit [GIT_REPO]\t\tInitialize the backup directory\n"
 	echo -en " l\tls [PATH]\t\tList repository content\n"
+	echo -en " pl\tpull\t\t\tPull changes\n"
+	echo -en " p\tpush [ARGS]\t\tPush changes\n"
 	echo -en " re\trestore FILEs\t\tRestore files\n"
 	echo -en "\trm FILEs\t\tRemove files from the repository\n"
 	echo -en " s\tstatus [ARGS]\t\tShow the repository status\n"
@@ -187,6 +189,14 @@ _check(){ #{{{
   	done
 }
 #}}}
+
+_pull(){ #{{{
+	echo "$(cd "${BAKDIR}"; ${VCS} pull --rebase)"
+} #}}}
+
+_push(){ #{{{
+	echo "$(cd "${BAKDIR}"; ${VCS} push $@)"
+} #}}}
 
 _restore(){ #{{{
 	_setFP "$1"
@@ -286,6 +296,12 @@ case "$1" in #{{{
 
 	l|ls)
 				shift; _ls $@;;
+
+	pl|pull)
+				_pull;;
+
+	p|push)
+				shift; _push $@;;
 
 	re|restore)
 				shift;
