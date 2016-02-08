@@ -29,15 +29,15 @@ Usage
 -----
 
 	usage: cfgkeeper
-		add FILEs		Add files to the index
-		check [PATH]	Show modified files
-		commit MSG		Record changes to the repository
-		diff FILE		Show changes between backup and system file
+	a	add FILEs		Add files to the index
+	c	check [PATH]	Show modified files
+	co	commit MSG		Record changes to the repository
+	d	diff FILE		Show changes between backup and system file
 		init [REPO]		Initialize the backup directory
-		ls [PATH]		List repository content
-		restore FILEs	Restore files
+	l	ls [PATH]		List repository content
+	re	restore FILEs	Restore files
 		rm FILEs		Remove files from the repository
-		status [ARGS]	Show the repository status
+	s	status [ARGS]	Show the repository status
 		-- ARGS			Forward arguments to git
 
 	backupdir: /root/cfgkeeper

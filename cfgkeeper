@@ -97,16 +97,16 @@ vcs_pt() { #{{{
 
 _usage(){ #{{{
 	echo -en "usage: $(basename "$0")\n"
-	echo -en "   add FILEs\t\tAdd files to the index\n"
-	echo -en "   check [PATH]\t\tShow modified files\n"
-	echo -en "   commit MSG\t\tRecord changes to the repository\n"
-	echo -en "   diff FILE\t\tShow changes between backup and system file\n"
-	echo -en "   init [GIT_REPO]\tInitialize the backup directory\n"
-	echo -en "   ls [PATH]\t\tList repository content\n"
-	echo -en "   restore FILEs\tRestore files\n"
-	echo -en "   rm FILEs\t\tRemove files from the repository\n"
-	echo -en "   status [ARGS]\tShow the repository status\n"
-	echo -en "   -- ARGS\t\tForward arguments to git\n"
+	echo -en " a\tadd FILEs\t\tAdd files to the index\n"
+	echo -en " c\tcheck [PATH]\t\tShow modified files\n"
+	echo -en " co\tcommit MSG\t\tRecord changes to the repository\n"
+	echo -en " d\tdiff FILE\t\tShow changes between backup and system file\n"
+	echo -en "\tinit [GIT_REPO]\t\tInitialize the backup directory\n"
+	echo -en " l\tls [PATH]\t\tList repository content\n"
+	echo -en " re\trestore FILEs\t\tRestore files\n"
+	echo -en "\trm FILEs\t\tRemove files from the repository\n"
+	echo -en " s\tstatus [ARGS]\t\tShow the repository status\n"
+	echo -en "\t-- ARGS\t\t\tForward arguments to git\n"
 	echo -en "\n"
 	echo -en "backupdir: $BAKDIR\n"
 	echo -en "\n"
@@ -256,7 +256,7 @@ case "$1" in #{{{
 				vcs_init $@
 				;;
 
-	add)
+	a|add)
 				shift;
 				while [ $# -gt 0 ]; do
 					_add "$1"
@@ -264,7 +264,7 @@ case "$1" in #{{{
 				done
 				;;
 
-	diff)
+	d|diff)
 				[ $# = 2 ] && _diff "$2" || _usage;;
 
 	rm)
@@ -275,19 +275,19 @@ case "$1" in #{{{
 				done
 				;;
 
-	commit)
+	co|commit)
 				[ $# = 2 ] && vcs_commit "$2" || _usage;;
 
-	status)
+	s|status)
 				shift; vcs_status $@;;
 
-	check)
+	c|ch|check)
 				shift; _check $@;;
 
-	ls)
+	l|ls)
 				shift; _ls $@;;
 
-	restore)
+	re|restore)
 				shift;
 				while [ $# -gt 0 ]; do
 					_restore "$1"
