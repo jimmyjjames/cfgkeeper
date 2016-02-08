@@ -10,6 +10,7 @@
 # Licence:                              GPL2
 
 
+VCS="git"
 VCS_CONTRIB="/usr/share/git/contrib"
 
 CFG="${HOME}/.config/cfgkeeper.rc"
