@@ -44,6 +44,15 @@ Usage
 
 	backupdir: /root/cfgkeeper
 
+Change to backupdir easily
+------------------------
+
+To change into the the backupdir by typing ```cfgpath``` on the command line you need to add the following alias into your ```~/.bashrc```:
+
+```bash
+alias cfgpath='cd `cfgkeeper printBakdir`'
+```
+
 
 [1]: http://www.christoph-polcin.com/project/cfgkeeper	"project homepage" 
 [2]: https://github.com/chripo/cfgkeeper	"github repository"
