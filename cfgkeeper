@@ -247,6 +247,11 @@ _diff(){ #{{{
 }
 #}}}
 
+_printBakdir(){ #{{{
+	echo ${BAKDIR}
+}
+#}}}
+
 # checks {{{
 [ ! -f "${CFG}" ] && echo -en "error: need configfile '${CFG}'\n" && exit 1
 . "${CFG}"
@@ -308,6 +313,9 @@ case "$1" in #{{{
 					shift
 				done
 				;;
+
+	pb|printBakdir)
+				_printBakdir;;
 
 	--)
 				shift; vcs_pt $@;;
