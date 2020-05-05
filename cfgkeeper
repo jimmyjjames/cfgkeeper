@@ -68,6 +68,40 @@ vcs_init() { #{{{
 }
 #}}}
 
+
+vcs_init_raw() {
+	#  [ -d "$BAKDIR/.git" ] && echo "error: repository already initialized!" && exit 1
+	if [ ! -f "$VCS_CONTRIB/hooks/setgitperms.perl" ]; then
+		echo VCS_CONTRIB="$VCS_CONTRIB" directory must contain 'hooks/setgitperms.perl'.
+		echo Adjust the path or pull it from 'http://git.kernel.org/?p=git/git.git;a=blob_plain;f=contrib/hooks/setgitperms.perl;hb=HEAD'
+		exit 1
+	fi
+
+	#if [ ! -z "$1" ]; then
+	#	${VCS} clone "$1" "$BAKDIR"
+	#else
+	#	${VCS} init "$BAKDIR"
+	#fi
+
+	touch "$BAKDIR/.gitmeta"
+
+	echo -en '#!/bin/sh\nSUBDIRECTORY_OK=1 . git-sh-setup\n$GIT_DIR/hooks/setgitperms.perl -r' > "$BAKDIR/.git/hooks/pre-commit"
+	echo -en '#!/bin/sh\nSUBDIRECTORY_OK=1 . git-sh-setup\n$GIT_DIR/hooks/setgitperms.perl -w' > "$BAKDIR/.git/hooks/post-merge"
+	cp "$BAKDIR/.git/hooks/post-merge" "$BAKDIR/.git/hooks/post-checkout"
+
+	ln -s "$VCS_CONTRIB/hooks/setgitperms.perl" "$BAKDIR/.git/hooks/setgitperms.perl"
+
+	chmod +x "$BAKDIR/.git/hooks/pre-commit" "$BAKDIR/.git/hooks/post-merge" "$BAKDIR/.git/hooks/post-checkout"
+
+	echo -en "!.gitmeta\n!.gitignore" >> "$BAKDIR/.gitignore"
+
+	vcs_add ".gitmeta"
+
+	vcs_add ".gitignore"
+
+	vcs_commit "initial commit"
+}
+
 vcs_add() { #{{{
 	echo "$(cd "${BAKDIR}"; ${VCS} add -v -- "$1")"
 }
@@ -267,6 +301,11 @@ case "$1" in #{{{
 	init)
 				shift
 				vcs_init $@
+				;;
+
+	init-raw)
+				shift
+				vcs_init_raw $@
 				;;
 
 	a|add)
